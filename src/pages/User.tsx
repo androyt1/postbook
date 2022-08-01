@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React,{useEffect,useState} from 'react'
 import { IUser } from '../interfaces/user'
-import { useParams } from 'react-router-dom'
+import { useParams,Link } from 'react-router-dom'
 
 const User = () => {
 
@@ -58,9 +58,10 @@ const User = () => {
            <div>
            <label htmlFor="name">Catch Phrase</label> : <span>{user?.company.catchPhrase}</span> 
            </div>
-           <div>
+           <div className='mb-4'>
            <label htmlFor="name">BS</label> : <span>{user?.company.bs}</span> 
            </div>
+           <Link to={`/user-posts/${user?.id}`} className='bg-blue-900 text-blue-50 px-6 py-2  text-xs'>View All User Posts</Link>
         </div>
     </div>
   )

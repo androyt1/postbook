@@ -59,7 +59,7 @@ const Home = () => {
 
   return (
     <div className='px-3 font-roboto min-h-[calc(100vh-60px)]'>
-        <header className='w-full py-10 flex flex-col justify-center items-center text-blue-50 bg-blue-900'>
+        <header className='w-full py-10 flex flex-col justify-center items-center text-blue-50 bg-blue-900 mb-6'>
             <h1 className='uppercase font-semibold text-3xl md:text-4xl text-center'>PostBook</h1>
             <p className='w-full md:w-[80%]  text-center mt-4'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam illo aspernatur .</p>
         </header>
@@ -67,7 +67,7 @@ const Home = () => {
         <section className='w-full'> 
             {
                 posts && currentItems.map(post=>(
-                <div key={post.id} className='py-4 px-3'>
+                <div key={post.id} className='py-4 px-3 odd:bg-white even:bg-slate-100'>
                    <div className='w-full text-slate-700'>
                      <Link to={`/posts/${post.id}`}><span className='uppercase font-semibold'>{post.title}</span></Link>
                    </div>

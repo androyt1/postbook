@@ -1,5 +1,5 @@
-import React,{useEffect,useState} from 'react'
-import { Link } from 'react-router-dom'
+import React,{useEffect,useState,useCallback} from 'react'
+import { Link} from 'react-router-dom'
 import { IPost } from '../interfaces/post'
 import {IUser} from '../interfaces/user'
 import axios from 'axios'
@@ -9,6 +9,8 @@ const Home = () => {
     
     const[posts,setPosts]=useState<IPost[]>([])
     const[users,setUsers]=useState<IUser[]>([])
+    const[search,setSearch]=useState<string>('')
+    const[result,setResult]=useState<IPost[]>([])
 
     useEffect(()=>{
         (async()=>{
@@ -31,8 +33,14 @@ const Home = () => {
         )()
     },[])
 
+    const handleSearch=useCallback(():void=>{
+      const results=posts.filter(post=>post.title.toLowerCase().includes(search.toLowerCase()))
+      setResult(results)
+    },[posts,search]) 
   
-
+    useEffect(()=>{ 
+      handleSearch()  
+    },[handleSearch,search])
    
     // Pagination Code goes here
      // We start with an empty list of items.
@@ -43,12 +51,12 @@ const Home = () => {
   const [itemOffset, setItemOffset] = useState<number>(0);
   const itemsPerPage:number=10 
 
-  useEffect(() => {
+  useEffect(() => { 
     // Fetch items from another resources.    
     const endOffset = itemOffset + itemsPerPage;   
-    setCurrentItems(posts.slice(itemOffset, endOffset)); 
-    setPageCount(Math.ceil(posts.length / itemsPerPage));
-  }, [itemOffset,posts]);
+    setCurrentItems(result.slice(itemOffset, endOffset)); 
+    setPageCount(Math.ceil(result.length / itemsPerPage));
+  }, [itemOffset,result]);
   // Invoke when user click to request another page.
   const handlePageClick = (event: { selected: number }) => {
     const newOffset = (event.selected * itemsPerPage) % posts.length;   
@@ -63,6 +71,11 @@ const Home = () => {
             <h1 className='uppercase font-semibold text-3xl md:text-4xl text-center'>PostBook</h1>
             <p className='w-full md:w-[80%]  text-center mt-4'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam illo aspernatur .</p>
         </header>
+
+    <div className='w-full  px-3 flex justify-center items-center mb-6'>
+        <input placeholder='Enter to Search Posts ...' className='w-full md:w-[60%] bg-blue-900 text-blue-50 px-2 placeholder:text-blue-200 py-1' name='search' value={search} onChange={(e: React.ChangeEvent<HTMLInputElement>)=>setSearch(e.target.value)} />
+    </div>
+
 
         <section className='w-full'> 
             {
